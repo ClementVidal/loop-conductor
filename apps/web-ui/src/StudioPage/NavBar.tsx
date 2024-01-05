@@ -15,7 +15,7 @@ export function NavBar({ onSidebarOpen, isSidebarOpen, conductorName }: Props) {
         />
       </div>
       <div className="flex-1 flex items-baseline gap-4">
-        <span className="text-xl">LoopConductor </span>
+        <span className="text-xl">Loop-Conductor </span>
         {conductorName !== undefined && (
           <span className="text-sm"> [ {conductorName} ] </span>
         )}
