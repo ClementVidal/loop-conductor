@@ -19,6 +19,7 @@ export const managedClipLocators: ManagedClipLocators = {
   fireScene: undefined,
   wait: undefined,
   memo: undefined,
+  transport: undefined,
   overdubLoop: (action: OverdubLoopAction) => {
     return [
       {

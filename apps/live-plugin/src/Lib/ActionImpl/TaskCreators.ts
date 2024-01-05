@@ -10,6 +10,7 @@ import {
   StopClipAction,
   Task,
   TempoAction,
+  TransportAction,
   barsToBeats,
   getNextBarTime,
 } from "@loop-conductor/common";
@@ -37,9 +38,7 @@ export const taskCreators: taskCreators = {
           tSig,
         }),
         callback: () => {
-          getLive()
-            .getTrack(action.trackName)
-            .arm(action.armed ?? 1);
+          getLive().getTrack(action.trackName).arm(action.armed);
         },
       },
     ];
@@ -116,8 +115,8 @@ export const taskCreators: taskCreators = {
           if (!isPlaying) {
             return;
           }
-          getLive().setSessionRecord(1);
-          track.arm(1);
+          getLive().setSessionRecord(true);
+          track.arm(true);
         },
       },
       // Stop recording task
@@ -132,9 +131,9 @@ export const taskCreators: taskCreators = {
           if (!isPlaying) {
             return;
           }
-          getLive().setSessionRecord(0);
+          getLive().setSessionRecord(false);
           if (unarmOnStop) {
-            getLive().getTrack(action.trackName).arm(0);
+            getLive().getTrack(action.trackName).arm(false);
           }
         },
       },
@@ -190,17 +189,17 @@ export const taskCreators: taskCreators = {
           if (unarmOthersOnStart) {
             for (let i = 0; i < getLive().getTrackCount(); i++) {
               if (i !== trackIndex) {
-                getLive().getTrack(i).arm(0);
+                getLive().getTrack(i).arm(false);
               }
             }
           }
 
           // Then arm the track
-          var track = getLive().getTrack(action.trackName);
-          track.arm(1);
+          const track = getLive().getTrack(action.trackName);
+          track.arm(true);
 
           // Then delete any existing clip
-          var clipSlot = track.getClipSlot(action.sceneName);
+          const clipSlot = track.getClipSlot(action.sceneName);
           if (clipSlot.hasClip()) {
             clipSlot.deleteClip();
           }
@@ -216,7 +215,7 @@ export const taskCreators: taskCreators = {
         timepoint: stopTime,
         callback: () => {
           if (unarmOnStop) {
-            getLive().getTrack(action.trackName).arm(0);
+            getLive().getTrack(action.trackName).arm(false);
           }
         },
       },
@@ -236,6 +235,24 @@ export const taskCreators: taskCreators = {
         }),
         callback: () => {
           getLive().setMetronome(action.enable);
+        },
+      },
+    ];
+  },
+  transport: (action: TransportAction, sequenceId: string) => {
+    const tSig = getLive().getCurrentTimeSignature();
+    const currentBeat = getLive().getCurrentBeat();
+    return [
+      {
+        id: getIdGenerator().id(),
+        sequenceId,
+        timepoint: getNextBarTime({
+          at: action.startBar ?? 0,
+          currentBeat,
+          tSig,
+        }),
+        callback: () => {
+          getLive().setIsPlaying(action.isPlaying);
         },
       },
     ];

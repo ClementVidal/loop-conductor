@@ -140,6 +140,12 @@ export class ConductorModel {
       });
       // Schelude the tasks
       getTaskManager().scheduleTask(tasks);
+
+      // Start the transport if needed
+      if (sequence.startPlaying) {
+        getLive().setStartTime(0);
+        getLive().setIsPlaying(true);
+      }
     } else {
       logError("No sequence found for padId: " + padId);
     }

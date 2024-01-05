@@ -43,9 +43,7 @@ export function RecordLoopActionView({ action, onChange }: Props) {
         <Label text="Unarm on stop" />
         <Checkbox
           value={!!action.unarmOnStop}
-          onChange={(unarmOnStop) =>
-            onChange({ ...action, unarmOnStop: unarmOnStop ? 1 : 0 })
-          }
+          onChange={(unarmOnStop) => onChange({ ...action, unarmOnStop })}
         />
       </FormElement>
       <FormElement>
@@ -55,7 +53,7 @@ export function RecordLoopActionView({ action, onChange }: Props) {
           onChange={(unarmOthersOnStart) =>
             onChange({
               ...action,
-              unarmOthersOnStart: unarmOthersOnStart ? 1 : 0,
+              unarmOthersOnStart,
             })
           }
         />

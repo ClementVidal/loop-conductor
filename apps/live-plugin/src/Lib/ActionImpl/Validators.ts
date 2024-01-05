@@ -12,6 +12,7 @@ import {
   Sequence,
   StopClipAction,
   TempoAction,
+  TransportAction,
   ValidationError,
   WaitAction,
   isValidBarCount,
@@ -121,6 +122,21 @@ export const validators: Validators = {
     if (typeof action.tempo !== "number") {
       throw {
         Error: "Invalid tempo value",
+        Conductor: conductor.name,
+        Sequence: sequence.name,
+        ActionIndex: actionIndex,
+      } satisfies ValidationError;
+    }
+  },
+  transport: (
+    action: TransportAction,
+    conductor: Conductor,
+    sequence: Sequence,
+    actionIndex: number
+  ) => {
+    if (typeof action.isPlaying !== "boolean") {
+      throw {
+        Error: "Invalid isPlaying value",
         Conductor: conductor.name,
         Sequence: sequence.name,
         ActionIndex: actionIndex,

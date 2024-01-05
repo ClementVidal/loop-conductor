@@ -9,6 +9,7 @@ import {
   RecordLoopAction,
   StopClipAction,
   TempoAction,
+  TransportAction,
   WaitAction,
 } from "@loop-conductor/common";
 import { useCallback, useMemo } from "react";
@@ -29,9 +30,9 @@ function createDefaultAction(type: Action["type"], startBar: number): Action {
     } satisfies WaitAction,
     armTrack: {
       id: getUUID(),
-      trackName: 0,
+      trackName: 1,
       type: "armTrack",
-      armed: 1,
+      armed: true,
       startBar,
     } satisfies ArmTrackAction,
     fireClip: {
@@ -50,7 +51,7 @@ function createDefaultAction(type: Action["type"], startBar: number): Action {
     metronome: {
       id: getUUID(),
       type: "metronome",
-      enable: 1,
+      enable: true,
       startBar,
     } satisfies MetronomeAction,
     overdubLoop: {
@@ -58,7 +59,7 @@ function createDefaultAction(type: Action["type"], startBar: number): Action {
       trackName: 1,
       sceneName: 1,
       type: "overdubLoop",
-      unarmOnStop: 0,
+      unarmOnStop: false,
       barCount: 1,
       startBar,
     } satisfies OverdubLoopAction,
@@ -68,8 +69,8 @@ function createDefaultAction(type: Action["type"], startBar: number): Action {
       sceneName: 1,
       type: "recordLoop",
       barCount: 1,
-      unarmOnStop: 0,
-      unarmOthersOnStart: 0,
+      unarmOnStop: false,
+      unarmOthersOnStart: false,
       startBar,
     } satisfies RecordLoopAction,
     stopClip: {
@@ -91,6 +92,12 @@ function createDefaultAction(type: Action["type"], startBar: number): Action {
       startBar,
       memo: "",
     } satisfies MemoAction,
+    transport: {
+      id: getUUID(),
+      type: "transport",
+      isPlaying: true,
+      startBar,
+    } satisfies TransportAction,
   };
 
   return map[type];
@@ -148,6 +155,10 @@ export function AddActionMenu({ onAddAction, startBar }: Props) {
       {
         label: "Memo",
         onClick: () => onAdd("memo"),
+      },
+      {
+        label: "Transport",
+        onClick: () => onAdd("transport"),
       },
     ];
   }, [onAdd]);

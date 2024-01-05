@@ -13,7 +13,7 @@ export function MetronomeActionView({ action, onChange }: Props) {
         <Label text="Enable" />
         <Checkbox
           value={action.enable ? true : false}
-          onChange={(enable) => onChange({ ...action, enable: enable ? 1 : 0 })}
+          onChange={(enable) => onChange({ ...action, enable })}
         />
       </FormElement>
     </div>

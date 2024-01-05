@@ -76,8 +76,8 @@ export class LiveTrack {
     return this.api.get<string>("name");
   }
 
-  public arm(on: 0 | 1): void {
-    this.api.set("arm", on);
+  public arm(on: boolean): void {
+    this.api.set("arm", on ? 1 : 0);
   }
 
   public getClipSlot(sceneName: SceneName): LiveClipSlot {
@@ -124,16 +124,24 @@ export class Live {
     };
   }
 
-  public setMetronome(onOff: 0 | 1): void {
-    this.api.set("metronome", onOff);
+  public setMetronome(onOff: boolean): void {
+    this.api.set("metronome", onOff ? 1 : 0);
+  }
+
+  public setIsPlaying(onOff: boolean): void {
+    this.api.set("is_playing", onOff ? 1 : 0);
+  }
+
+  public setStartTime(beat: number): void {
+    this.api.set("start_time", beat);
   }
 
   public setTempo(tempo: number): void {
     this.api.set("tempo", tempo);
   }
 
-  public setSessionRecord(onOff: 0 | 1): void {
-    this.api.set("session_record", onOff);
+  public setSessionRecord(onOff: boolean): void {
+    this.api.set("session_record", onOff ? 1 : 0);
   }
 
   public getTrack(nameOrIndex: TrackName): LiveTrack {
@@ -221,7 +229,7 @@ export class Live {
   public unarmAllTracks(): void {
     const numTracks = this.getTrackCount();
     for (var i = 0; i < numTracks; i++) {
-      this.getTrack(i).arm(0);
+      this.getTrack(i).arm(false);
     }
   }
 

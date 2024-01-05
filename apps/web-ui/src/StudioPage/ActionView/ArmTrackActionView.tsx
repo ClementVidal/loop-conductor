@@ -23,7 +23,7 @@ export function ArmTrackActionView({ action, onChange }: Props) {
         <Label text="Armed" />
         <Checkbox
           value={action.armed ? true : false}
-          onChange={(armed) => onChange({ ...action, armed: armed ? 1 : 0 })}
+          onChange={(armed) => onChange({ ...action, armed })}
         />
       </FormElement>
     </div>

@@ -138,15 +138,15 @@ export interface RecordLoopAction extends BaseAction<"recordLoop"> {
   trackName: TrackName;
   sceneName: SceneName;
   // Wether the track should be un armed when the loop is done recording
-  unarmOnStop: 0 | 1;
+  unarmOnStop: boolean;
   // Wether ALL Others tracks should be un armed when the loop start recording
-  unarmOthersOnStart: 0 | 1;
+  unarmOthersOnStart: boolean;
 }
 
 export interface ArmTrackAction extends BaseAction<"armTrack"> {
   trackName: TrackName;
   // Default to true
-  armed: 0 | 1;
+  armed: boolean;
 }
 
 export interface FireClipAction extends BaseAction<"fireClip"> {
@@ -159,7 +159,7 @@ export interface FireSceneAction extends BaseAction<"fireScene"> {
 }
 
 export interface MetronomeAction extends BaseAction<"metronome"> {
-  enable: 0 | 1;
+  enable: boolean;
 }
 
 export interface OverdubLoopAction extends BaseAction<"overdubLoop"> {
@@ -167,7 +167,7 @@ export interface OverdubLoopAction extends BaseAction<"overdubLoop"> {
   trackName: TrackName;
   sceneName: SceneName;
   // Wether the track should be un armed when the loop is done recording
-  unarmOnStop: 0 | 1;
+  unarmOnStop: boolean;
 }
 
 export interface StopClipAction extends BaseAction<"stopClip"> {
@@ -187,6 +187,10 @@ export interface TempoAction extends BaseAction<"tempo"> {
   tempo: number;
 }
 
+export interface TransportAction extends BaseAction<"transport"> {
+  isPlaying: boolean;
+}
+
 export type Action =
   | ArmTrackAction
   | FireClipAction
@@ -197,6 +201,7 @@ export type Action =
   | StopClipAction
   | TempoAction
   | MemoAction
+  | TransportAction
   | WaitAction;
 
 export type ActionMap = {
@@ -210,6 +215,7 @@ export type ActionMap = {
   fireScene: FireSceneAction;
   wait: WaitAction;
   memo: MemoAction;
+  transport: TransportAction;
 };
 
 export interface Sequence {
@@ -220,7 +226,10 @@ export interface Sequence {
   // An id to identify the sequence in the pad matrix
   // Pad Id Are 1 based
   padId: number;
+  // The ordered list of actions to execute
   actions: Action[];
+  // Wether to start the main transport when the sequence is started
+  startPlaying: boolean;
 }
 
 export interface Conductor {

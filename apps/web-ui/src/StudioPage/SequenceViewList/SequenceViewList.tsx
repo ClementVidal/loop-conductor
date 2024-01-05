@@ -36,6 +36,7 @@ export function SequenceViewList({ sequences, onSequenceListChange }: Props) {
           padId: availablePadIds[0],
           name: "New sequence",
           actions: [],
+          startPlaying: false,
         });
       })
     );

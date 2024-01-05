@@ -51,7 +51,6 @@ function init() {
   getMidiManager().observe(({ conductor }) => {
     let conductorModel: ConductorModel | null = null;
 
-    logInfo("1");
     try {
       conductorModel = new ConductorModel(conductor);
       getLogManager().startInfoGroup({

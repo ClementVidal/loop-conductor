@@ -43,9 +43,7 @@ export function OverdubLoopActionView({ action, onChange }: Props) {
         <Label text="Unarm on stop" />
         <Checkbox
           value={!!action.unarmOnStop}
-          onChange={(unarmOnStop) =>
-            onChange({ ...action, unarmOnStop: unarmOnStop ? 1 : 0 })
-          }
+          onChange={(unarmOnStop) => onChange({ ...action, unarmOnStop })}
         />
       </FormElement>
     </div>

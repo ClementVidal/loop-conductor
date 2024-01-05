@@ -1,7 +1,7 @@
 import { Action, Sequence, getActionBarCount } from "@loop-conductor/common";
 import { produce } from "immer";
 import { useCallback, useMemo } from "react";
-import { FormElement, IconButton, Input, Label } from "../../Shared";
+import { Checkbox, FormElement, IconButton, Input, Label } from "../../Shared";
 import { PadPicker } from "../../Shared/PadPicker";
 import { ActionView } from "../ActionView";
 import { AddActionMenu } from "./AddActionMenu";
@@ -141,6 +141,15 @@ export function SequenceView({
             <PadPicker
               value={sequence.padId}
               onChange={(padId) => onChange({ ...sequence, padId })}
+            />
+          </FormElement>
+          <FormElement>
+            <Label text="Start playing" />
+            <Checkbox
+              value={sequence.startPlaying}
+              onChange={(startPlaying) =>
+                onChange({ ...sequence, startPlaying })
+              }
             />
           </FormElement>
         </div>

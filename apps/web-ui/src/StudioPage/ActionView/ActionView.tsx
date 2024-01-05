@@ -10,7 +10,9 @@ import { OverdubLoopActionView } from "./OverdubLoopActionView";
 import { RecordLoopActionView } from "./RecordLoopActionView";
 import { StopClipActionView } from "./StopClipActionView";
 import { TempoActionView } from "./TempoActionView";
+import { TransportActionView } from "./TransportActionView";
 import { WaitActionView } from "./WaitActionView";
+import { beautifyActionType } from "./beautifyActionType";
 
 interface ActionProps {
   action: BaseAction;
@@ -43,6 +45,7 @@ export function ActionView({
     tempo: TempoActionView as FC<ActionProps>,
     wait: WaitActionView as FC<ActionProps>,
     memo: MemoActionView as FC<ActionProps>,
+    transport: TransportActionView as FC<ActionProps>,
   };
 
   const ActionComponent = ActionMap[
@@ -51,7 +54,9 @@ export function ActionView({
 
   return (
     <div className="bg-zinc-200 rounded min-w-[15rem] shadow-lg border border-zinc-500 flex-shrink-0 flex flex-col">
-      <div className="p-2 font-medium text-zinc-600">{action.type}</div>
+      <div className="p-2 font-medium text-zinc-600">
+        {beautifyActionType(action.type)}
+      </div>
       <div className="p-2 border-b border-t border-zinc-400 flex-grow">
         <ActionComponent action={action} onChange={onChange} />
       </div>
