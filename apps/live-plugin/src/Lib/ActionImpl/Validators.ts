@@ -18,6 +18,7 @@ import {
   isValidBarCount,
 } from "@loop-conductor/common";
 import { getLive } from "../Globals";
+import { logInfo } from "../LogManager";
 
 type Validators = {
   [key in Action["type"]]: (
@@ -134,6 +135,7 @@ export const validators: Validators = {
     sequence: Sequence,
     actionIndex: number
   ) => {
+    logInfo("transport", action, typeof action.isPlaying);
     if (typeof action.isPlaying !== "boolean") {
       throw {
         Error: "Invalid isPlaying value",
@@ -180,7 +182,7 @@ export const validators: Validators = {
     sequence: Sequence,
     actionIndex: number
   ) => {
-    if (typeof action.enable !== "number") {
+    if (typeof action.enable !== "boolean") {
       throw {
         Error: "Invalid enabled value",
         Conductor: conductor.name,

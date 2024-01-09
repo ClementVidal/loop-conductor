@@ -15,6 +15,7 @@ declare var outlets: number;
 declare class LiveAPI {
   constructor(callback: Function | null, path: string);
 
+  id: unknown;
   set(property: string, value: unknown): void;
   get<T = unknown>(property: string): T;
   call(method: string, ...args: unknown[]): void;

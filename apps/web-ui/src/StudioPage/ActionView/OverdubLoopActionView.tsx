@@ -40,10 +40,29 @@ export function OverdubLoopActionView({ action, onChange }: Props) {
         />
       </FormElement>
       <FormElement>
+        <Label text="Select track" />
+        <Checkbox
+          value={action.select}
+          onChange={(select) => onChange({ ...action, select })}
+        />
+      </FormElement>
+      <FormElement>
         <Label text="Unarm on stop" />
         <Checkbox
           value={!!action.unarmOnStop}
           onChange={(unarmOnStop) => onChange({ ...action, unarmOnStop })}
+        />
+      </FormElement>
+      <FormElement>
+        <Label text="Unarm others on start" />
+        <Checkbox
+          value={!!action.unarmOthersOnStart}
+          onChange={(unarmOthersOnStart) =>
+            onChange({
+              ...action,
+              unarmOthersOnStart,
+            })
+          }
         />
       </FormElement>
     </div>

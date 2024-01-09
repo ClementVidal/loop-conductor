@@ -4,6 +4,7 @@ import {
   TimeSignature,
   TrackName,
 } from "@loop-conductor/common";
+import { logInfo } from "./LogManager";
 
 export class LiveClip {
   private api: LiveAPI;
@@ -77,12 +78,22 @@ export class LiveTrack {
   }
 
   public arm(on: boolean): void {
+    logInfo("Arming track", this.getName());
+    logInfo("With", on, this.path);
     this.api.set("arm", on ? 1 : 0);
   }
 
   public getClipSlot(sceneName: SceneName): LiveClipSlot {
     const sceneIndex = this.live.getSceneIndex(sceneName);
     return new LiveClipSlot(this.path + " clip_slots " + sceneIndex, this.live);
+  }
+
+  public select(): void {
+    // The only place where i found some info about that is here:
+    // https://cycling74.com/forums/setting-and-getting-the-selected_track-from-liveapi
+    const t = new LiveAPI(() => {}, `live_set view`);
+    // @ts-expect-error
+    t.set("selected_track", "id", this.api.id);
   }
 }
 
@@ -209,9 +220,11 @@ export class Live {
    */
   public getSceneIndex(sceneName: SceneName): number {
     const numScenes = this.api.getcount("scenes");
-    if (typeof sceneName === "number") {
-      if (sceneName > 0 && sceneName <= numScenes) {
-        return sceneName - 1;
+    const nameAsNumber = Number(sceneName);
+
+    if (!isNaN(nameAsNumber)) {
+      if (nameAsNumber > 0 && nameAsNumber <= numScenes) {
+        return nameAsNumber - 1;
       }
       return -1;
     }
@@ -233,7 +246,7 @@ export class Live {
     }
   }
 
-  private getTrackByIndex(trackIndex: number): LiveTrack {
+  public getTrackByIndex(trackIndex: number): LiveTrack {
     var trackPath = "live_set tracks " + trackIndex;
     return new LiveTrack(trackPath, this);
   }

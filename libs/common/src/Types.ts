@@ -137,6 +137,8 @@ export interface RecordLoopAction extends BaseAction<"recordLoop"> {
   barCount: number;
   trackName: TrackName;
   sceneName: SceneName;
+  // Wether or not the track should be selected when the action start
+  select: boolean;
   // Wether the track should be un armed when the loop is done recording
   unarmOnStop: boolean;
   // Wether ALL Others tracks should be un armed when the loop start recording
@@ -166,8 +168,12 @@ export interface OverdubLoopAction extends BaseAction<"overdubLoop"> {
   barCount: number;
   trackName: TrackName;
   sceneName: SceneName;
+  // Wether or not the track should be selected when the action start
+  select: boolean;
   // Wether the track should be un armed when the loop is done recording
   unarmOnStop: boolean;
+  // Wether ALL Others tracks should be un armed when the loop start recording
+  unarmOthersOnStart: boolean;
 }
 
 export interface StopClipAction extends BaseAction<"stopClip"> {

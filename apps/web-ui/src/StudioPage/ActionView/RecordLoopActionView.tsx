@@ -40,6 +40,13 @@ export function RecordLoopActionView({ action, onChange }: Props) {
         />
       </FormElement>
       <FormElement>
+        <Label text="Select track" />
+        <Checkbox
+          value={action.select}
+          onChange={(select) => onChange({ ...action, select })}
+        />
+      </FormElement>
+      <FormElement>
         <Label text="Unarm on stop" />
         <Checkbox
           value={!!action.unarmOnStop}

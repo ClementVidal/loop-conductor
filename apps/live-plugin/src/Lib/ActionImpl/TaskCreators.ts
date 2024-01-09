@@ -100,8 +100,6 @@ export const taskCreators: taskCreators = {
       tSig,
     });
 
-    const unarmOnStop = action.unarmOnStop ?? 1;
-
     return [
       // Start recording task
       {
@@ -109,6 +107,15 @@ export const taskCreators: taskCreators = {
         sequenceId,
         timepoint: startTime,
         callback: () => {
+          // First unarm all other tracks
+          const trackIndex = getLive().getTrackIndex(action.trackName);
+          if (action.unarmOthersOnStart) {
+            for (let i = 0; i < getLive().getTrackCount(); i++) {
+              if (i !== trackIndex) {
+                getLive().getTrackByIndex(i).arm(false);
+              }
+            }
+          }
           const track = getLive().getTrack(action.trackName);
           const clipSlot = track.getClipSlot(action.sceneName);
           const isPlaying = clipSlot.getClip()?.isPlaying();
@@ -116,6 +123,9 @@ export const taskCreators: taskCreators = {
             return;
           }
           getLive().setSessionRecord(true);
+          if (action.select) {
+            track.select();
+          }
           track.arm(true);
         },
       },
@@ -125,16 +135,16 @@ export const taskCreators: taskCreators = {
         sequenceId,
         timepoint: stopTime,
         callback: () => {
+          const trackIndex = getLive().getTrackIndex(action.trackName);
           const track = getLive().getTrack(action.trackName);
           const clipSlot = track.getClipSlot(action.sceneName);
           const isPlaying = clipSlot.getClip()?.isPlaying();
+
           if (!isPlaying) {
             return;
           }
+          track.arm(!action.unarmOnStop);
           getLive().setSessionRecord(false);
-          if (unarmOnStop) {
-            getLive().getTrack(action.trackName).arm(false);
-          }
         },
       },
     ];
@@ -161,7 +171,6 @@ export const taskCreators: taskCreators = {
     const tSig = getLive().getCurrentTimeSignature();
     const currentBeat = getLive().getCurrentBeat();
 
-    const trackIndex = getLive().getTrackIndex(action.trackName);
     const startTime = getNextBarTime({
       at: action.startBar ?? 0,
       currentBeat,
@@ -175,8 +184,6 @@ export const taskCreators: taskCreators = {
     });
 
     const recordLength = barsToBeats(action.barCount, tSig);
-    const unarmOnStop = action.unarmOnStop ?? 1;
-    const unarmOthersOnStart = action.unarmOthersOnStart ?? 1;
 
     return [
       // Start recording task
@@ -185,8 +192,9 @@ export const taskCreators: taskCreators = {
         sequenceId,
         timepoint: startTime,
         callback: () => {
+          const trackIndex = getLive().getTrackIndex(action.trackName);
           // First unarm all other tracks
-          if (unarmOthersOnStart) {
+          if (action.unarmOthersOnStart) {
             for (let i = 0; i < getLive().getTrackCount(); i++) {
               if (i !== trackIndex) {
                 getLive().getTrack(i).arm(false);
@@ -204,6 +212,10 @@ export const taskCreators: taskCreators = {
             clipSlot.deleteClip();
           }
 
+          if (action.select) {
+            track.select();
+          }
+
           // Then start recording
           clipSlot.fire(recordLength);
         },
@@ -214,9 +226,7 @@ export const taskCreators: taskCreators = {
         sequenceId,
         timepoint: stopTime,
         callback: () => {
-          if (unarmOnStop) {
-            getLive().getTrack(action.trackName).arm(false);
-          }
+          getLive().getTrack(action.trackName).arm(!action.unarmOnStop);
         },
       },
     ];

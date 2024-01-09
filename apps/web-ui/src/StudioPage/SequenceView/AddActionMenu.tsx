@@ -60,6 +60,8 @@ function createDefaultAction(type: Action["type"], startBar: number): Action {
       sceneName: 1,
       type: "overdubLoop",
       unarmOnStop: false,
+      unarmOthersOnStart: false,
+      select: true,
       barCount: 1,
       startBar,
     } satisfies OverdubLoopAction,
@@ -71,6 +73,7 @@ function createDefaultAction(type: Action["type"], startBar: number): Action {
       barCount: 1,
       unarmOnStop: false,
       unarmOthersOnStart: false,
+      select: true,
       startBar,
     } satisfies RecordLoopAction,
     stopClip: {

@@ -39,7 +39,6 @@ export function useMidiToolkit(): {
       }
 
       console.log("Sending load conductor", conductor);
-      output.playNote("C4", { duration: 0.1 });
       output.sendSysex(
         MidiVendorId,
         midiCommandToBuffer({
