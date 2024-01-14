@@ -1,5 +1,14 @@
 import { PropsWithChildren } from "react";
+import { classNames } from "./Utils";
 
-export function FormElement({ children }: PropsWithChildren<{}>) {
-  return <div className="flex pt-1 pb-1 gap-2 items-center">{children}</div>;
+interface Props {
+  className?: string;
+}
+
+export function FormElement({ children, className }: PropsWithChildren<Props>) {
+  return (
+    <div className={classNames("flex pt-1 pb-1 gap-2 items-center", className)}>
+      {children}
+    </div>
+  );
 }

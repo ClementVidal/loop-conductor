@@ -12,7 +12,6 @@ export function useMidiInit(): boolean {
     WebMidi.enable({ sysex: true })
       .then(() => {
         setIsMidiReady(true);
-        console.log("Midi ready");
       })
       .catch((err) => {
         console.error("Failed to enable midi", err);

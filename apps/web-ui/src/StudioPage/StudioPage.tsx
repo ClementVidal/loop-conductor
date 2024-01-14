@@ -21,7 +21,10 @@ export function StudioPage() {
   );
 
   useSyncStorage(storage);
-  useSyncConductor({ conductor, midiOutputName: storage.midiOutputName });
+  const syncConductor = useSyncConductor({
+    conductor,
+    midiOutputName: storage.midiOutputName,
+  });
 
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
 
@@ -94,6 +97,10 @@ export function StudioPage() {
     [storage, setStorage]
   );
 
+  const handleSync = useCallback(() => {
+    syncConductor();
+  }, [syncConductor]);
+
   if (!isMidiReady) {
     return null;
   }
@@ -102,6 +109,7 @@ export function StudioPage() {
       <div className="bg-zinc-700 flex flex-col h-screen">
         <NavBar
           onSidebarOpen={setIsSidebarOpen}
+          onSync={handleSync}
           isSidebarOpen={isSidebarOpen}
           conductorName={conductor?.name}
         />

@@ -8,11 +8,11 @@ interface Props {
 
 export function MemoActionView({ action, onChange }: Props) {
   return (
-    <div className="">
-      <FormElement>
+    <div className="flex-grow">
+      <FormElement className="h-full">
         <TextArea
           placeholder="Scene name"
-          className="w-full h-full resize-none"
+          className="w-full h-full resize-none min-h-[150px]"
           value={action.memo}
           onChange={(memo) => onChange({ ...action, memo })}
         />

@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import { Checkbox, FormElement, IconButton, Input, Label } from "../../Shared";
 import { PadPicker } from "../../Shared/PadPicker";
 import { ActionView } from "../ActionView";
-import { AddActionMenu } from "./AddActionMenu";
+import { Separator } from "./Separator";
 
 interface Props {
   sequence: Sequence;
@@ -36,10 +36,14 @@ export function SequenceView({
   count,
 }: Props) {
   const handleAddAction = useCallback(
-    (action: Action) => {
+    (action: Action, index: number = -1) => {
       onChange(
         produce(sequence, (draft) => {
-          draft.actions.push(action);
+          if (index >= 0) {
+            draft.actions.splice(index, 0, action);
+          } else {
+            draft.actions.push(action);
+          }
           return recomputeStartBars(draft);
         })
       );
@@ -153,24 +157,29 @@ export function SequenceView({
             />
           </FormElement>
         </div>
-        <div className="flex gap-2 items-stretch overflow-x-auto pb-2">
+        <div className="flex items-stretch overflow-x-auto pb-2">
           {sequence.actions.map((action, index) => (
-            <ActionView
-              key={action.id}
-              action={action}
-              onChange={handleChangeAction}
-              onMove={handleMoveAction}
-              onRemoved={handleRemoveAction}
-              index={index}
-              count={sequence.actions.length}
-            />
+            <>
+              <Separator
+                onAddAction={(action) => handleAddAction(action, index)}
+                startBar={nextActionStartBar}
+              />
+              <ActionView
+                key={action.id}
+                action={action}
+                onChange={handleChangeAction}
+                onMove={handleMoveAction}
+                onRemoved={handleRemoveAction}
+                index={index}
+                count={sequence.actions.length}
+              />
+            </>
           ))}
-          <div className="flex flex-col justify-center gap-4 bg-zinc-200 rounded px-1 py-2 shadow-lg border border-zinc-500">
-            <AddActionMenu
-              onAddAction={handleAddAction}
-              startBar={nextActionStartBar}
-            />
-          </div>
+          <Separator
+            alwaysVisible={sequence.actions.length === 0}
+            onAddAction={(action) => handleAddAction(action)}
+            startBar={nextActionStartBar}
+          />
         </div>
       </div>
     </div>

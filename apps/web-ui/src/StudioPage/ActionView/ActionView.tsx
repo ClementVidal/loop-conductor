@@ -57,7 +57,7 @@ export function ActionView({
       <div className="p-2 font-medium text-zinc-600">
         {beautifyActionType(action.type)}
       </div>
-      <div className="p-2 border-b border-t border-zinc-400 flex-grow">
+      <div className="p-2 border-b border-t border-zinc-400 flex-grow flex flex-col">
         <ActionComponent action={action} onChange={onChange} />
       </div>
       <div className="flex gap-4 justify-between p-2 items-center">
