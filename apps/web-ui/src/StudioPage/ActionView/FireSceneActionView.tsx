@@ -17,7 +17,6 @@ export function FireSceneActionView({ action, onChange }: Props) {
           className="input input-xs w-20"
           value={action.sceneName.toString()}
           onChange={(sceneName) => onChange({ ...action, sceneName })}
-          readonly
         />
       </FormElement>
     </div>
